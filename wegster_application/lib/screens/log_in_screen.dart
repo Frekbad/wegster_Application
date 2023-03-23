@@ -12,6 +12,7 @@ import 'package:wegster_application/models/user_model.dart';
 import 'package:wegster_application/screens/button_navigation.dart';
 import 'package:wegster_application/screens/edit_profile.dart';
 import 'package:wegster_application/screens/forget_password_page.dart';
+import 'package:wegster_application/screens/location_Displayscreen.dart';
 import 'package:wegster_application/screens/sign_up.dart';
 
 import 'package:wegster_application/validator/validator.dart';
@@ -291,7 +292,8 @@ class _LoginPageState extends State<LoginPage> {
 
                             context.read<CubitUser>().emit(user);
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const ButtonNavigation(),
+                              builder: (context) =>
+                                  const LocationDisplayScreen(),
                             ));
                           } else {
                             ScaffoldMessenger.of(context)

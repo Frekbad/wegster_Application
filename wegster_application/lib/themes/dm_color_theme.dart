@@ -22,4 +22,6 @@ class DMColors {
   static const Color purpleColor = Color(0xffBF40BF);
   static const Color marronColor = Color(0xff800015);
   static const Color lightGreenColor = Color(0xff4ce44c);
+  static const Color darkgreenColor = Color(0xff008000);
+  static const Color violetcolor = Color(0xff8F00FF);
 }

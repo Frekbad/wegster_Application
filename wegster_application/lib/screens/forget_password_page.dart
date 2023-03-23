@@ -1,9 +1,11 @@
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wegster_application/api/auth/django_authentication_api.dart';
 import 'package:wegster_application/screens/log_in_screen.dart';
 import 'package:wegster_application/screens/reset_password_tokenPage.dart';
-import 'package:wegster_application/screens/send_code_page.dart';
 import 'package:wegster_application/screens/sign_up.dart';
 import 'package:wegster_application/themes/dm_color_theme.dart';
 import 'package:wegster_application/validator/validator.dart';
@@ -44,9 +46,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 30,
-                ),
                 Padding(
                   padding: const EdgeInsets.only(right: 90, left: 40),
                   child: Row(
@@ -71,7 +70,16 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                //const SizedBox(height: 20),
+
+                //const SizedBox(height: 30),
+                Center(
+                  child: Lottie.asset('assets/image/lottie/forgot.json',
+                      height: 215, width: 280),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 const Center(
                   child: LabelText(
                       name: 'Forgot Password?',
@@ -81,7 +89,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       fontFamily: 'ProximaNova',
                       textDecoration: TextDecoration.none),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(
+                  height: 15,
+                ),
                 const LabelText(
                     name: 'Email Address',
                     color: DMColors.textColor,
@@ -156,11 +166,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           },
                         );
                       } else {
+                        // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                                 backgroundColor: DMColors.lightGreenColor,
                                 content: Text(
-                                  "email Token Send Successfully",
+                                  "Email Token Send Successfully",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -223,7 +234,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           name: 'Login',
                           color: DMColors.logoColor,
                           size: 17,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w700,
                           fontFamily: 'ProximaNova',
                           textDecoration: TextDecoration.none),
                     ),
@@ -234,7 +245,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         name: 'or',
                         color: DMColors.textColor,
                         size: 17,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                         fontFamily: 'ProximaNova',
                         textDecoration: TextDecoration.none),
                     const SizedBox(width: 5),
@@ -248,7 +259,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           name: 'Sign up',
                           color: DMColors.logoColor,
                           size: 17,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w600,
                           fontFamily: 'ProximaNova',
                           textDecoration: TextDecoration.none),
                     ),

@@ -1,17 +1,48 @@
 from dj_rest_auth.registration.views import VerifyEmailView
 from django.contrib import admin
 from django.urls import path,include
-from wegster_app.views import CustomerRegistrationView, VendorRegistrationView,VendorForm,ChangePasswordRequest
+from wegster_app import views
+from wegster_app.views import CustomerRegistrationView, VendorRegistrationView,SendEmailNotification,TodoGetCreate,TodoUpdateDelete,RoomGetCreate,RoomListByHotel, BookingListByUser, BookingListByHotel , RoomBookUpdate , RoomBook, BusView, SpecificBusView,SeatView,SeatListByBus,BusBook,BusBookUpdate,BusBookingListByUser,BookingListByBus,BookingListBySeat,ReviewListCreateAPIView,AdminRegistrationView
+from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 
 urlpatterns=[
-     path('auth/', include('dj_rest_auth.urls')),
+    path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
     path('auth/confirm-email/', VerifyEmailView.as_view(),name='account_email_verification_sent'),
     path('registration/customer/', CustomerRegistrationView.as_view(), name = 'Customer Register'),
     path('registration/vendor/', VendorRegistrationView.as_view(), name = 'Vendor Register'),
-    path('unverifiedvendor/',VendorForm.as_view(), name = 'Unverified Vendors'),
-    path('auth/change-password/', ChangePasswordRequest.as_view(), name='change-password'),
+    path('registration/Admin/', AdminRegistrationView.as_view(), name = 'Admin Register'),
+    #path('auth/change-password/', ChangePasswordRequest.as_view(), name='change-password'),
     path('auth/password-reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
-    # path('auth/password-reset/confirm', include('django_rest_passwordresetconfirm.urls', namespace='password_resetconfirm')),
+    path('send-email-notification/',SendEmailNotification.as_view()),
+    # path('user/auth/password-reset/confirm/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('Hotel/', TodoGetCreate.as_view()),
+    path('Hotel/<int:pk>/', TodoUpdateDelete.as_view()),
+    # path('bookings/', BookingListCreateView.as_view(), name='booking-list-create'),
+    # path('bookings/<int:pk>/', BookingRetrieveUpdateDestroyView.as_view(), name='booking-retrieve-update-destroy'),
+    path('Room/', RoomGetCreate.as_view()),
+    path('Room/<str:vendor>/', RoomListByHotel.as_view(), name='product-list-by-hotel'),
+    path('RoomBook/', RoomBook.as_view()),
+    path('RoomBook/<int:pk>', RoomBookUpdate.as_view()),
+    path('RoomBookUser/<str:user>', BookingListByUser.as_view()),
+    path('RoomBookVendor/<str:vendor>', BookingListByHotel.as_view()),
+    path('Bus/', BusView.as_view()),
+    path('Bus/<int:pk>', SpecificBusView.as_view()),
+    path('Seat/', SeatView.as_view()),
+    path('Seat/<str:seat>', SeatListByBus.as_view()),
+    path('BusBook/', BusBook.as_view()),
+    path('BusBook/<int:pk>', BusBookUpdate.as_view()),
+    path('BusBookUser/<str:user>', BusBookingListByUser.as_view()),
+    path('BusBookBus/<str:bus>', BookingListByBus.as_view()),
     
+    path('BusBookseat/<str:seat>', BookingListBySeat.as_view()),
+    path('reviews/', ReviewListCreateAPIView.as_view(), name='review-list-create'),
 ]
+
+    
+
+    # path('Edit-profile/', UpdateProfileView.as_view(), name='update_profile'),
+   
+  
+    #path('auth/password-reset/confirm', include('django_rest_passwordresetconfirm.urls', namespace='password_resetconfirm')),
+    

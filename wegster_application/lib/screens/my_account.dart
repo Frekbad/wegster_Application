@@ -15,6 +15,9 @@ import 'package:wegster_application/screens/button_navigation.dart';
 import 'package:wegster_application/screens/edit_profile.dart';
 
 import 'package:wegster_application/screens/log_in_screen.dart';
+import 'package:wegster_application/screens/phone_Screen.dart';
+import 'package:wegster_application/screens/settings_page.dart';
+import 'package:wegster_application/screens/welcome_page.dart';
 
 class MyAccount extends StatefulWidget {
   final GoogleSignInAccount? User;
@@ -137,23 +140,31 @@ class _MyAccountState extends State<MyAccount> {
               AccountMenuWidget(
                 title: "Settings",
                 icon: LineAwesomeIcons.cog,
-                onpress: () {},
+                onpress: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SettingsPage(),
+                  ));
+                },
+              ),
+              AccountMenuWidget(
+                title: "Phone validation",
+                icon: LineAwesomeIcons.phone,
+                onpress: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const MyPhone(),
+                  ));
+                },
               ),
               AccountMenuWidget(
                 title: "Reviews",
                 icon: LineAwesomeIcons.thumbs_up,
                 onpress: () {},
               ),
-              AccountMenuWidget(
-                title: 'Favorites',
-                icon: LineAwesomeIcons.heart,
-                onpress: () {},
-              ),
               const Divider(
                 color: DMColors.googleColor2,
               ),
               const SizedBox(
-                height: 10,
+                height: 20,
               ),
               AccountMenuWidget(
                 title: "Logout",
@@ -193,7 +204,8 @@ class _MyAccountState extends State<MyAccount> {
                                           )));
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                        builder: (context) => const LoginPage(),
+                                        builder: (context) =>
+                                            const WelcomeScreen(),
                                       ),
                                       (route) => false);
                                 },

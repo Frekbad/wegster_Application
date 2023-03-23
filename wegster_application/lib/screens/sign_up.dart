@@ -28,7 +28,6 @@ class _UserSignUpState extends State<UserSignUp> {
   late TextEditingController usernameController;
   late TextEditingController useremailController;
 
-  late TextEditingController useraddressController;
   late TextEditingController userpasswordController;
   late TextEditingController passwordconfirmController;
 
@@ -40,7 +39,6 @@ class _UserSignUpState extends State<UserSignUp> {
     usernameController = TextEditingController();
     useremailController = TextEditingController();
 
-    useraddressController = TextEditingController();
     userpasswordController = TextEditingController();
     passwordconfirmController = TextEditingController();
   }
@@ -51,7 +49,6 @@ class _UserSignUpState extends State<UserSignUp> {
     usernameController.dispose();
     useremailController.dispose();
 
-    useraddressController.dispose();
     userpasswordController.dispose();
     passwordconfirmController.dispose();
   }
@@ -144,23 +141,7 @@ class _UserSignUpState extends State<UserSignUp> {
                   const SizedBox(
                     height: 30,
                   ),
-                  SignUpContainer(
-                    controller: useraddressController,
-                    name: 'Address',
-                    prefix: const Icon(
-                      Icons.location_pin,
-                      color: DMColors.redColor,
-                    ),
-                    validator: (address) {
-                      if (address!.isEmpty) {
-                        return 'Enter your address';
-                      } else {
-                        return null;
-                      }
-                    },
-                    keyboardType: TextInputType.text,
-                    obsecure: false,
-                  ),
+
                   const SizedBox(
                     height: 35,
                   ),
@@ -203,7 +184,6 @@ class _UserSignUpState extends State<UserSignUp> {
                           userpasswordController.text,
                           passwordconfirmController.text,
                           usernameController.text,
-                          useraddressController.text,
                         );
                         if (authResult.runtimeType == String) {
                           // ignore: use_build_context_synchronously

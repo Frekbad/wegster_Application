@@ -73,7 +73,7 @@ class _ButtonNavigationState extends State<ButtonNavigation> {
               GButton(
                 icon: Icons.bookmark_sharp,
                 iconColor: DMColors.redColor,
-                text: 'My Booking',
+                text: 'Hotel Booking',
               ),
               GButton(
                 icon: Icons.person_rounded,
@@ -81,9 +81,9 @@ class _ButtonNavigationState extends State<ButtonNavigation> {
                 text: 'My Account',
               ),
               GButton(
-                icon: Icons.help_outlined,
+                icon: Icons.bookmark_sharp,
                 iconColor: DMColors.greenColor,
-                text: 'Help and Support',
+                text: 'Bus Booking',
               ),
             ],
           ),

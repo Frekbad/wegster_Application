@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wegster_application/api/auth/django_authentication_api.dart';
 import 'package:wegster_application/google_sign/google_auth.dart';
 import 'package:wegster_application/models/user_model.dart';
@@ -12,6 +13,9 @@ import 'package:wegster_application/screens/button_navigation.dart';
 import 'package:wegster_application/screens/forget_password_page.dart';
 import 'package:wegster_application/screens/sign_up.dart';
 import 'package:wegster_application/validator/validator.dart';
+import 'package:wegster_application/vendor_Screen/VbuttonNavigation.dart';
+import 'package:wegster_application/vendor_Screen/hotelDashboard.dart';
+
 import 'package:wegster_application/vendor_Screen/vendor_Registration.dart';
 
 import '../exports/exports.dart';
@@ -58,48 +62,45 @@ class _VendorLoginState extends State<VendorLogin> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // ignore: duplicate_ignore
                 children: [
-                  const Icon(Icons.arrow_back_ios),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/image/lopi.svg",
-                          //height: 60,
-                          width: 70,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: LabelText(
-                              name: 'Wegster',
-                              color: DMColors.logoColor,
-                              size: 35.0,
-                              fontWeight: FontWeight.w800,
-                              fontFamily: 'ProximaNova',
-                              textDecoration: TextDecoration.none),
-                        ),
-                      ],
-                    ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(Icons.arrow_back_ios),
                   ),
-                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/image/lopi.svg",
+                        //height: 60,
+                        width: 70,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: LabelText(
+                            name: 'Wegster',
+                            color: DMColors.logoColor,
+                            size: 35.0,
+                            fontWeight: FontWeight.w800,
+                            fontFamily: 'ProximaNova',
+                            textDecoration: TextDecoration.none),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                   const Center(
                     child: LabelText(
-                        name: 'Log in to Wegster as Vendor ',
+                        name: 'Vendor Login ',
                         color: DMColors.googleColor2,
                         size: 24.0,
                         fontWeight: FontWeight.w900,
                         fontFamily: 'ProximaNova',
                         textDecoration: TextDecoration.none),
                   ),
-                  const SizedBox(height: 30),
-                  const SizedBox(height: 20),
-
-                  // ignore: prefer_const_constructors
-                  SizedBox(
-                    height: 2,
-                  ),
-
+                  // const SizedBox(height: 50),
+                  Lottie.asset('assets/image/lottie/login.json',
+                      height: 238, width: 300),
                   const LabelText(
                       name: 'Email Address',
                       color: DMColors.textColor,
@@ -246,7 +247,7 @@ class _VendorLoginState extends State<VendorLogin> {
                             context.read<CubitUser>().emit(user);
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const VendorRegistration()));
+                                    const VButtonNavigation()));
                           } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(

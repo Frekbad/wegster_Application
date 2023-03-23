@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +49,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
     'django_rest_passwordreset',
-
+    
+    #'django_rest_send_email_notification',
     'wegster_app.apps.WegsterAppConfig'
 ]
 SITE_ID = 1
@@ -132,6 +134,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -158,8 +162,8 @@ EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "dhakalayush11@gmail.com" # sender Email
-EMAIL_HOST_PASSWORD = "ubnqtoleopwnchgs" #Password
+EMAIL_HOST_USER = "dhakalayush09@gmail.com" # sender Email
+EMAIL_HOST_PASSWORD = "lmaszokpoblhnnau" #Password
 ACCOUNT_EMAIL_VERIFICATION ='mandatory'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
@@ -174,9 +178,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
+REST_USE_CUSTOM_TOKEN = True
+
 REST_AUTH_SERIALIZERS = {
     "LOGIN_SERIALIZER":"wegster_app.serializers.NewLoginSerializer",
     "USER_DETAILS_SERIALIZER":"wegster_app.serializers.NewUserDetailsSerializer"
+    
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
@@ -187,5 +194,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication', 
+        #'rest_framework.parsers.JSONParser',
     ]
 }

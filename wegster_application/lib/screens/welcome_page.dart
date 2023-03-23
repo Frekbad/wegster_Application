@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:wegster_application/Admin/admin_Login.dart';
 import 'package:wegster_application/exports/exports.dart';
 import 'package:wegster_application/screens/log_in_screen.dart';
-import 'package:wegster_application/screens/sign_up.dart';
 import 'package:wegster_application/vendor_Screen/vendor_Login.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           padding: const EdgeInsets.only(top: 17, bottom: 17),
           // ignore: prefer_const_constructors
           child: Text(
-            'Go to Log in',
+            'Customer Login',
             style: const TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () {
@@ -47,19 +47,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Text(
-                'No account yet?',
+                'Vendor',
                 style: TextStyle(color: DMColors.loginColor, fontSize: 20),
               ),
               SizedBox(
                 width: 8,
               ),
-              Text('Sign Up',
+              Text('Login',
                   style: TextStyle(color: DMColors.loginColor, fontSize: 20))
             ],
           ),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const UserSignUp(),
+              builder: (context) => const VendorLogin(),
             ));
             //GoRouter.of(context).go('/signupPage');
           },
@@ -121,7 +121,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             // ignore: prefer_const_constructors
             SizedBox(
-              height: 70,
+              height: 100,
             ),
             Container(
                 width: MediaQuery.of(context).size.width,
@@ -129,7 +129,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 child: LoginButton),
             // ignore: prefer_const_constructors
             SizedBox(
-              height: 15,
+              height: 25,
             ),
             Container(
               width: MediaQuery.of(context).size.width,
@@ -140,20 +140,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             SizedBox(
               height: 45,
             ),
-
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const VendorLogin(),
+                    builder: (context) => const AdminLogin(),
                   ));
                 },
-                child: const LabelText(
-                    name: 'Vendor Authentication',
-                    color: DMColors.blackColor,
-                    size: 17,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Proxima Nova',
-                    textDecoration: TextDecoration.none))
+                child: const Text('Admin Login'))
           ],
         ),
       )),
