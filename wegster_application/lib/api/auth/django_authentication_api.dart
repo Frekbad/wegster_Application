@@ -625,14 +625,30 @@ Future<dynamic> postReview(double rating, String text) async {
   }
 }
 
-Future<dynamic> fetchReviews() async {
-  const url = '$baseUrl/user/reviews/';
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    final reviews = jsonDecode(response.body);
-    print('Reviews: $reviews');
+Future<List<Reviews>> GetReviews(int id) async {
+  List<Reviews> myTodos = [];
+  String FK = id.toString();
+  const String api = 'http://10.0.2.2:8000/user/Review/';
+  var res = await http.get(Uri.parse(api + FK));
+  print(res.statusCode);
+  print(res.body);
+
+  if (res.statusCode == 200 || res.statusCode == 201) {
+    var data = jsonDecode(res.body);
+    data.forEach((todo) {
+      Reviews t = Reviews(
+        id: todo['id'],
+        rating: todo['Rating'],
+        Review: todo['Review'],
+        Hotelname: todo['Hotelname'],
+        Customer_Name: todo['Customer_Name'],
+        Hotel_ID: todo['Hotel_ID'],
+      );
+      myTodos.add(t);
+    });
+    return myTodos;
   } else {
-    print('Failed to fetch reviews.');
+    throw Exception("Error");
   }
 }
 

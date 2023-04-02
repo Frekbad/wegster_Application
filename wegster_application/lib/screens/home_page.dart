@@ -134,8 +134,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           centerTitle: true,
 
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50.0),
-            child: Text(user.address!),
+            preferredSize: Size.fromHeight(20),
+            child: Text(
+              user.address!,
+              style: TextStyle(
+                  color: DMColors.backgroundwhiteColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700),
+            ),
           ),
         ),
         body: SafeArea(

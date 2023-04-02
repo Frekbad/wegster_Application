@@ -146,13 +146,14 @@ class HotelBooking(models.Model):
         return self.name 
 
 class Review(models.Model):
-    rating = models.IntegerField()
-    text = models.TextField()
-    Hotel_ID = models.ForeignKey(VendorRequest,on_delete=models.CASCADE,null=True)
-
+    Rating = models.FloatField(blank=True, default=0)
+    Review = models.CharField(max_length=500, blank= True)
+    Hotelname = models.CharField(max_length = 50, blank=True)
+    Hotel_ID = models.ForeignKey(VendorRequest, on_delete=models.CASCADE,null=True)
+    Customer_Name = models.CharField(max_length = 50, blank=True)
 
     def __str__(self):
-        return f'{self.rating} - {self.text}'
+        return self.Hotelname
 
 
 

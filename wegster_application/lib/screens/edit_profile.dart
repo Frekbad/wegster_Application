@@ -1,9 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_final_fields
+// ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_final_fields, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:wegster_application/api/auth/django_authentication_api.dart';
 import 'package:wegster_application/exports/exports.dart';
@@ -50,7 +52,7 @@ class _EditProfileState extends State<EditProfile> {
 
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: DMColors.backgroundColor,
+      backgroundColor: DMColors.backgroundwhiteColor,
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: DMColors.logoColor,
@@ -67,7 +69,14 @@ class _EditProfileState extends State<EditProfile> {
               width: 130,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Fluttertoast.showToast(
+                    msg: "Your Profile Has been Updated",
+                    fontSize: 18,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: DMColors.lightGreenColor,
+                    textColor: Colors.white);
+              },
               child: const LabelText(
                   name: 'Save',
                   color: DMColors.loginColor,
@@ -86,116 +95,21 @@ class _EditProfileState extends State<EditProfile> {
           child: Column(
             children: [
               const SizedBox(
-                height: 5,
+                height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: DMColors.loginColor,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5),
-                        child: LabelText(
-                            name: 'User Details',
-                            color: DMColors.blackColor,
-                            size: 17,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'ProximaNova',
-                            textDecoration: TextDecoration.none),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Display name',
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty ||
-                                  !RegExp(r'^[a-z A-z]+$').hasMatch(value)) {
-                                return "Enter Correct Name";
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.04,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            controller: dateconfirmController,
-                            onTap: () async {
-                              DateTime? showDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1990),
-                                  lastDate: DateTime(2700));
-
-                              if (showDate != null) {
-                                setState(() {
-                                  dateconfirmController.text =
-                                      DateFormat('yyyy-MM-dd').format(showDate);
-                                });
-                              }
-                            },
-                            decoration: const InputDecoration(
-                                labelText: 'Date of birth'),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(right: 50),
-                        child: LabelText(
-                            name:
-                                'We will show the age range next to your guest reviews.',
-                            color: DMColors.blackColor,
-                            size: 13,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'ProximaNova',
-                            textDecoration: TextDecoration.none),
-                      ),
-                      SizedBox(
-                        height: height * 0.04,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'Location'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Lottie.asset('assets/image/lottie/update.json',
+                  width: 230, height: 250),
               const SizedBox(
-                height: 7,
+                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12)),
                     color: DMColors.loginColor,
                   ),
                   child: Column(
@@ -265,32 +179,6 @@ class _EditProfileState extends State<EditProfile> {
                           width: double.infinity,
                           child: TextFormField(
                             decoration:
-                                const InputDecoration(labelText: 'Location'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'Gender'),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            decoration:
                                 const InputDecoration(labelText: 'Address'),
                           ),
                         ),
@@ -299,18 +187,30 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 7,
-              ),
+              // const SizedBox(
+              //   height: 100,
+              // ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 7),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   // padding: const EdgeInsets.symmetric(vertical: 20),
+
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(2),
+                        topRight: Radius.circular(2)),
                     color: DMColors.loginColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: DMColors.blackColor.withOpacity(0.4),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset:
+                            const Offset(0, 4), // changes position of shadow
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,24 +314,25 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 7),
                 child: Container(
+                  // ignore: prefer_const_constructors
                   decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: DMColors.blackColor.withOpacity(0.4),
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset:
-                              const Offset(0, 4), // changes position of shadow
-                        ),
-                      ],
-                      color: DMColors.loginColor,
-                      borderRadius: BorderRadius.circular(15)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: DMColors.blackColor.withOpacity(0.4),
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset:
+                            const Offset(0, 4), // changes position of shadow
+                      ),
+                    ],
+                    color: DMColors.loginColor,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                  ),
                   width: double.infinity,
                   child: TextButton(
                       onPressed: () async {

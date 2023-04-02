@@ -165,6 +165,14 @@ class BookingListBySeat(generics.ListCreateAPIView):
         queryset = Busbooking.objects.filter( Seat_ID = seat)
         return queryset       
 
-class ReviewListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Review.objects.all()
+class ReviewsViews(generics.ListCreateAPIView):
+   queryset = Review.objects.all()
+   serializer_class = ReviewSerializer
+
+class ReviewListByHotel(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        vendor = self.kwargs['vendor']
+        queryset = Review.objects.filter(Hotel_ID = vendor)
+        return queryset

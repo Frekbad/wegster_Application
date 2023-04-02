@@ -92,7 +92,7 @@ class BookingBusSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ['id', 'rating', 'text']
+        fields = '__all__'
 
 class NewLoginSerializer(LoginSerializer):
     pass

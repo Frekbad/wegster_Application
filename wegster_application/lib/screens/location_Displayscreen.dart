@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wegster_application/api/auth/django_authentication_api.dart';
 import 'package:wegster_application/exports/exports.dart';
-import 'package:wegster_application/screens/button_navigation.dart';
 import 'package:wegster_application/screens/splash_screen.dart';
 import 'package:wegster_application/widgets/constants.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +42,20 @@ class _LocationDisplayScreenState extends State<LocationDisplayScreen> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+        return Future.error(Fluttertoast.showToast(
+            msg: "Cannot Set User Location",
+            fontSize: 18,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: DMColors.redColor,
+            textColor: Colors.white));
+      }
+      if (permission == LocationPermission.always) {
+        return Future.error(Fluttertoast.showToast(
+            msg: "Succesfully Set User Location",
+            fontSize: 18,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: DMColors.greenColor,
+            textColor: Colors.white));
       }
     }
 
@@ -82,6 +95,22 @@ class _LocationDisplayScreenState extends State<LocationDisplayScreen> {
 
     print(res.body);
     print(res.statusCode);
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      Fluttertoast.showToast(
+          msg: "Location Has been Set",
+          fontSize: 18,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: DMColors.greenColor,
+          textColor: Colors.white);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Cannot Set User Location",
+          fontSize: 18,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: DMColors.redColor,
+          textColor: Colors.white);
+      print("Sorry");
+    }
   }
 
   @override

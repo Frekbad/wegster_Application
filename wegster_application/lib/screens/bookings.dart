@@ -438,6 +438,7 @@ class _RoomBookingState extends State<RoomBooking> {
                                                                           18)),
                                                           child: Center(
                                                             child: Row(
+                                                              // ignore: prefer_const_literals_to_create_immutables
                                                               children: [
                                                                 // ignore: prefer_const_constructors
                                                                 SizedBox(
@@ -466,8 +467,6 @@ class _RoomBookingState extends State<RoomBooking> {
                                                                     textDecoration:
                                                                         TextDecoration
                                                                             .none),
-                                                                Text(
-                                                                    referenceID)
                                                               ],
                                                             ),
                                                           ),

@@ -1,35 +1,36 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names, unused_local_variable, sized_box_for_whitespace, unnecessary_string_interpolations, unnecessary_new, avoid_types_as_parameter_names
+// ignore_for_file: public_member_api_docs, sort_constructors_first, non_constant_identifier_names, unused_local_variable, sized_box_for_whitespace, unnecessary_string_interpolations, unnecessary_new, avoid_types_as_parameter_names, avoid_unnecessary_containers, prefer_const_constructors
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:wegster_application/api/auth/django_authentication_api.dart';
+
 import 'package:wegster_application/exports/exports.dart';
 import 'package:wegster_application/models/user_cubit.dart';
 import 'package:wegster_application/models/user_model.dart';
 import 'package:wegster_application/screens/bookings.dart';
 
+import '../widgets/constants.dart';
+
 class HotelPageDisplay extends StatefulWidget {
-  //final int Hotel_Id;
   final String Hotel_Name;
   final String Hotel_Email;
   final String Hotel_Location;
-  //final String Hotel_Token;
+
   final String Hotel_Image;
-  //final String Hotel_Cousine;
+
   final String Hotel_Price;
   final String Hotel_Description;
   final int Hotel_ID;
-  // final String? text;
-  // final String? ratings;
 
   const HotelPageDisplay({
     Key? key,
-    //required this.Hotel_Id,
-    //required this.Hotel_Token,
-    //required this.Hotel_Cousine,
     required this.Hotel_Name,
     required this.Hotel_Email,
     required this.Hotel_Location,
@@ -37,8 +38,6 @@ class HotelPageDisplay extends StatefulWidget {
     required this.Hotel_Price,
     required this.Hotel_Description,
     required this.Hotel_ID,
-    // this.text,
-    // this.ratings,
   }) : super(key: key);
 
   @override
@@ -46,7 +45,7 @@ class HotelPageDisplay extends StatefulWidget {
 }
 
 class _HotelPageDisplayState extends State<HotelPageDisplay> {
-  double _rating = 0.0;
+  String? Rating;
   String locationMessage = 'Current Location of the User';
   late String lat;
   late String lon;
@@ -142,6 +141,7 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
     String Hotel_Location = widget.Hotel_Location;
     String Hotel_Price = widget.Hotel_Price;
     String Hotel_email = widget.Hotel_Email;
+    int Hotel_ID = widget.Hotel_ID;
     // String text = widget.text!;
     // String rating = widget.ratings!;
 
@@ -172,28 +172,15 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
             textDecoration: TextDecoration.none),
         centerTitle: true,
         bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(30),
-            child: GestureDetector(
-              onTap: () async {
-                Position position = await getCurrentLocationUser();
-                locationMessage =
-                    'Latitude of Place:${position.latitude}, Longitude of Place:${position.longitude}';
-                getAddressFromLatlon(position);
-
-                setState(() {});
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Text(
-                  currentLocation,
-                  //textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      color: DMColors.loginColor,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            )),
+          preferredSize: const Size.fromHeight(15),
+          child: Text(
+            user.address!,
+            style: const TextStyle(
+                color: DMColors.backgroundwhiteColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w700),
+          ),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -715,7 +702,7 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 250,
+                height: 350,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -782,7 +769,7 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
                         ],
                       ),
                       RatingBar.builder(
-                        initialRating: _rating,
+                        initialRating: 0,
                         minRating: 0,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
@@ -799,9 +786,8 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
                           color: DMColors.yellowColor,
                         ),
                         onRatingUpdate: (rating) {
-                          setState(() {
-                            _rating = rating;
-                          });
+                          Rating = rating.toString();
+                          print(rating);
                         },
                       ),
                       const SizedBox(height: 15),
@@ -809,6 +795,16 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: TextFormField(
                           controller: reviewController,
+
+                          // onChanged: (value) {
+                          //   reviewController.text = value.toString();
+                          // },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return ("Empty Field");
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Write Your Experience.',
@@ -821,7 +817,7 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
                                   color: DMColors.blackColor,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'ProximaNova')),
-                          maxLines: null,
+                          maxLines: 3,
                         ),
                       ),
                       const SizedBox(
@@ -831,7 +827,12 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
                         padding: const EdgeInsets.symmetric(horizontal: 50),
                         child: GestureDetector(
                           onTap: () {
-                            //postReview(rating as double, text);
+                            postReview(Rating!, reviewController.text,
+                                Hotel_Name, user.name!, Hotel_ID);
+                            setState(() {
+                              reviewController.clear();
+                            });
+                            //GetReviews(Hotel_ID);
                           },
                           child: Container(
                             width: double.infinity,
@@ -854,6 +855,218 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
                             ),
                           ),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            showModalBottomSheet<void>(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(12),
+                                bottomRight: Radius.circular(12),
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              )),
+                              backgroundColor: DMColors.backgroundColor,
+                              elevation: 8.0,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 800,
+                                  child: Center(
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          FutureBuilder(
+                                            future: GetReviews(Hotel_ID),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot snapshot) {
+                                              Widget widget = Text("");
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return const Center(
+                                                    child:
+                                                        CircularProgressIndicator());
+                                              } else if (snapshot.hasError) {
+                                                print(snapshot.error);
+                                                return const Center(
+                                                  child: Text(
+                                                      "Something went wrong"),
+                                                );
+                                              } else {
+                                                if (snapshot.hasData) {
+                                                  if (snapshot.hasData &&
+                                                      snapshot.data.isEmpty) {
+                                                    widget = Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        // Center(
+                                                        //   child: Lottie.asset(
+                                                        //       'Assets/LottieAnimations/No_Data_Found_Lottie.json',
+                                                        //       height: 220.h,
+                                                        //       width: 250.w),
+                                                        // ),
+                                                      ],
+                                                    );
+                                                  } else {
+                                                    widget = Column(
+                                                      children: [
+                                                        Center(
+                                                          child: Column(
+                                                              children: snapshot
+                                                                  .data
+                                                                  .map<Widget>(
+                                                                      (e) {
+                                                            int id = e.id;
+                                                            double rating =
+                                                                e.rating;
+                                                            String Review =
+                                                                "${e.Review}";
+                                                            String Hotelname =
+                                                                "${e.Hotelname}";
+
+                                                            String
+                                                                Customer_Name =
+                                                                "${e.Customer_Name}";
+
+                                                            return Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 16,
+                                                                      right: 16,
+                                                                      bottom:
+                                                                          10,
+                                                                      top: 10),
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                border: Border(
+                                                                  bottom: BorderSide(
+                                                                      color: Colors
+                                                                          .black12,
+                                                                      width: 1),
+                                                                ),
+                                                              ),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      // CircleAvatar(
+                                                                      //   radius:
+                                                                      //       30,
+                                                                      //   backgroundImage:
+                                                                      //       AssetImage('Assets/images/Icon.png'),
+                                                                      // ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            15,
+                                                                      ),
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          Text(
+                                                                            "${Customer_Name}",
+                                                                            // style:
+                                                                            //     GoogleFonts.lato(
+                                                                            //   textStyle: style5,
+                                                                            // ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          RatingBar
+                                                                              .builder(
+                                                                            initialRating:
+                                                                                rating,
+                                                                            minRating:
+                                                                                1,
+                                                                            direction:
+                                                                                Axis.horizontal,
+                                                                            allowHalfRating:
+                                                                                true,
+                                                                            itemCount:
+                                                                                5,
+                                                                            itemPadding:
+                                                                                EdgeInsets.symmetric(horizontal: 0),
+                                                                            itemBuilder: (context, _) =>
+                                                                                Icon(
+                                                                              Icons.star,
+                                                                              color: Colors.amber,
+                                                                              size: 5,
+                                                                            ),
+                                                                            tapOnlyMode:
+                                                                                true,
+                                                                            ignoreGestures:
+                                                                                true,
+                                                                            onRatingUpdate:
+                                                                                (rating) {
+                                                                              print(rating);
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 10,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsets.only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            20),
+                                                                    child: Text(
+                                                                      "${Review}",
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          }).toList()),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  }
+                                                } else {
+                                                  widget = const Center(
+                                                      child: Text("NO DATA"));
+                                                }
+                                              }
+
+                                              return widget;
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //   builder: (context) => Review(Hotel_ID: Hotel_ID),
+                            // ));
+                          },
+                          child: Text('View Review')),
+                      const SizedBox(
+                        height: 10,
                       ),
                     ],
                   ),
@@ -893,5 +1106,41 @@ class _HotelPageDisplayState extends State<HotelPageDisplay> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> postReview(String Rating, String Review, String Hotelname,
+      String Customer_Name, int Hotel_ID) async {
+    String FK = Hotel_ID.toString();
+    var url = Uri.parse("$baseUrl/user/Review/");
+    var res = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "Rating": Rating,
+          "Review": Review,
+          "Hotelname": Hotelname,
+          "Customer_Name": Customer_Name,
+          "Hotel_ID": FK
+        }));
+    print(res.body);
+    print(res.statusCode);
+
+    if (res.statusCode == 200 || res.statusCode == 201) {
+      Fluttertoast.showToast(
+          msg: "Review has been posted",
+          fontSize: 18,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Sorry! Something went wrong",
+          fontSize: 18,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white);
+      print("Sorry");
+    }
   }
 }

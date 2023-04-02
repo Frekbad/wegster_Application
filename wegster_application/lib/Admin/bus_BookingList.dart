@@ -89,7 +89,7 @@ class _BusBookingListState extends State<BusBookingList> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 65),
-                  child: Text("Bus Booking",
+                  child: Text("Admin Page",
                       style: TextStyle(
                           fontSize: 22,
                           fontFamily: 'ProximaNova',

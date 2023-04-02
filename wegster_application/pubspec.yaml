@@ -158,6 +158,8 @@ flutter:
     - assets/image/otp.png
     - assets/image/lottie/loading.json
     - assets/image/lottie/admin.json
+    - assets/image/lottie/update.json
+    - assets/image/lottie/data.json
 
 
     

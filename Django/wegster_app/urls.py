@@ -2,7 +2,7 @@ from dj_rest_auth.registration.views import VerifyEmailView
 from django.contrib import admin
 from django.urls import path,include
 from wegster_app import views
-from wegster_app.views import CustomerRegistrationView, VendorRegistrationView,SendEmailNotification,TodoGetCreate,TodoUpdateDelete,RoomGetCreate,RoomListByHotel, BookingListByUser, BookingListByHotel , RoomBookUpdate , RoomBook, BusView, SpecificBusView,SeatView,SeatListByBus,BusBook,BusBookUpdate,BusBookingListByUser,BookingListByBus,BookingListBySeat,ReviewListCreateAPIView,AdminRegistrationView
+from wegster_app.views import CustomerRegistrationView, VendorRegistrationView,SendEmailNotification,TodoGetCreate,TodoUpdateDelete,RoomGetCreate,RoomListByHotel, BookingListByUser, BookingListByHotel , RoomBookUpdate , RoomBook, BusView, SpecificBusView,SeatView,SeatListByBus,BusBook,BusBookUpdate,BusBookingListByUser,BookingListByBus,BookingListBySeat,AdminRegistrationView,ReviewsViews,ReviewListByHotel
 from django_rest_passwordreset.views import reset_password_request_token, reset_password_confirm
 
 urlpatterns=[
@@ -36,7 +36,8 @@ urlpatterns=[
     path('BusBookBus/<str:bus>', BookingListByBus.as_view()),
     
     path('BusBookseat/<str:seat>', BookingListBySeat.as_view()),
-    path('reviews/', ReviewListCreateAPIView.as_view(), name='review-list-create'),
+    path('Review/', ReviewsViews.as_view()),
+    path('Review/<str:vendor>', ReviewListByHotel.as_view()),
 ]
 
     

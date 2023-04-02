@@ -244,15 +244,31 @@ class Seat {
   }
 }
 
-class Review {
-  final int? rating;
-  final String? text;
-  final int? Hotel_ID;
+class Reviews {
+  int? id;
+  double? rating;
+  String? Review;
+  String? Customer_Name;
+  int? Hotel_ID;
+  String? Hotelname;
 
-  Review({this.rating, this.text, this.Hotel_ID});
+  Reviews({
+    this.id,
+    this.rating,
+    this.Review,
+    this.Customer_Name,
+    this.Hotel_ID,
+    this.Hotelname,
+  });
 
-  factory Review.fromJson(Map<String, dynamic> json) {
-    return Review(
-        rating: json['rating'], text: json['text'], Hotel_ID: json['Hotel_ID']);
+  factory Reviews.fromJson(Map<String, dynamic> json) {
+    return Reviews(
+      id: json['id'],
+      rating: json['Rating'],
+      Review: json['Review'],
+      Hotelname: json['Hotelname'],
+      Customer_Name: json['Customer_Name'],
+      Hotel_ID: json['Hotel_ID'],
+    );
   }
 }
